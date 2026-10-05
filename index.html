@@ -3,19 +3,19 @@
 <title>RK Crackers | Fireworks & Crackers</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#fff8ef;color:#25160f}
-header{background:linear-gradient(135deg,#7b1113,#d97706);color:#fff;padding:28px 16px;text-align:center;position:sticky;top:0;z-index:20}
-header h1{margin:0;font-size:32px}header p{margin:8px 0 0}.wrap{max-width:1200px;margin:auto;padding:18px}
+header{background:linear-gradient(135deg,#120018,#4a0020 45%,#b20b16);color:#fff;padding:22px 16px;text-align:center;position:sticky;top:0;z-index:20;box-shadow:0 4px 18px #0004}
+header h1{margin:0;font-size:34px;font-weight:900;letter-spacing:.4px}header p{margin:8px 0 0}.wrap{max-width:1200px;margin:auto;padding:18px}
 .note{background:#fff3cd;border:1px solid #efd27d;padding:12px;border-radius:10px;margin-bottom:15px}
 .controls{display:grid;grid-template-columns:1fr 220px auto;gap:10px;margin:18px 0}
 input,select,button{font:inherit}input,select{padding:12px;border:1px solid #ddd;border-radius:10px;background:#fff}
 .cart-btn{background:#111;color:#fff;border:0;border-radius:10px;padding:12px 18px;cursor:pointer;font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.card{background:#fff;border:1px solid #eadbc9;border-radius:16px;overflow:hidden;box-shadow:0 4px 15px #0000000c;display:flex;flex-direction:column}
-.photo{height:165px;background:linear-gradient(135deg,#fff1d6,#ffd8a8);display:flex;align-items:center;justify-content:center;font-size:56px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:18px}
+.card{background:#fff;border:1px solid #eadbc9;border-radius:14px;overflow:hidden;box-shadow:0 5px 18px #00000012;display:flex;flex-direction:column;transition:.18s}.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px #00000018}
+.photo{height:190px;background:#f7f7f7;display:flex;align-items:center;justify-content:center;overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover;display:block}
 .body{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}.name{font-weight:700;min-height:42px}
 .price{font-size:21px;font-weight:800;color:#b42318}.mrp{color:#777;text-decoration:line-through;font-size:13px;margin-left:5px}
 .qtyrow{display:flex;gap:7px;align-items:center}.qtyrow button{width:38px;height:38px;border:1px solid #ddd;background:#fafafa;border-radius:8px;cursor:pointer;font-weight:700}
-.qtyrow input{width:55px;text-align:center;padding:8px}.add{border:0;background:#b42318;color:#fff;padding:11px;border-radius:9px;cursor:pointer;font-weight:700}
+.qtyrow input{width:55px;text-align:center;padding:8px}.add{border:0;background:#d71920;color:#fff;padding:12px;border-radius:9px;cursor:pointer;font-weight:800;box-shadow:0 3px 8px #d7192026}.add:hover{background:#b90f15}
 footer{margin-top:30px;padding:24px;text-align:center;background:#26140d;color:#fff}
 .cart-panel{position:fixed;right:0;top:0;width:min(420px,94vw);height:100vh;background:#fff;z-index:50;box-shadow:-5px 0 25px #0003;transform:translateX(105%);transition:.25s;padding:18px;display:flex;flex-direction:column}
 .cart-panel.open{transform:translateX(0)}.cart-head{display:flex;justify-content:space-between;align-items:center}.cart-items{overflow:auto;flex:1;margin:12px 0}
@@ -25,9 +25,9 @@ footer{margin-top:30px;padding:24px;text-align:center;background:#26140d;color:#
 @media(max-width:700px){.controls{grid-template-columns:1fr}header h1{font-size:26px}}
 </style></head>
 <body>
-<header><h1>🎆 RK Crackers</h1><p>Fireworks & Crackers Catalogue</p></header>
+<header><h1>🎆 <span style="color:#ffdd21">RK</span> Crackers</h1><p>Light Up Your Celebrations</p></header>
 <div class="wrap"><div class="note">📱 Select products, choose quantities and use <b>WhatsApp Checkout</b> to send your order to <b>+91 7092174868</b>.</div>
-<div class="controls"><input id="search" placeholder="Search products..." oninput="render()">
+<div class="controls"><input id="search" placeholder="Search for products..." oninput="render()">
 <select id="category" onchange="render()"><option value="">All Categories</option></select>
 <button class="cart-btn" onclick="toggleCart()">🛒 Cart (<span id="count">0</span>)</button></div>
 <div id="grid" class="grid"></div></div>
@@ -42,10 +42,28 @@ const money=n=>Number(n).toLocaleString("en-IN",{maximumFractionDigits:2});
 const save=()=>localStorage.setItem("rkCart",JSON.stringify(cart));
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 function setup(){let cs=[...new Set(products.map(p=>p.category))].sort();document.getElementById("category").innerHTML='<option value="">All Categories</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join("");render();}
+function imageFor(p){
+ const n=p.name.toLowerCase(), c=p.category.toLowerCase();
+ if(n.includes("kuruvi")) return "images/kuruvi.jpg";
+ if(n.includes("gold laxmi")) return "images/gold-laxmi.jpg";
+ if(n.includes("deluxe laxmi")) return "images/deluxe-laxmi.jpg";
+ if(n.includes("laxmi")) return n.includes("super deluxe") ? "images/deluxe-laxmi.jpg" : "images/laxmi.jpg";
+ if(n.includes("rocket")) return "images/rocket.jpg";
+ if(n.includes("sparkl")) return "images/sparklers.jpg";
+ if(n.includes("shot") || c.includes("repeating shots")) return n.includes("10") ? "images/10k-shot.jpg" : (n.includes("5") ? "images/5k-shot.jpg" : "images/1k-shot.jpg");
+ if(c.includes("ground chakkar") || n.includes("wheel") || n.includes("chakkar")) return n.includes("wheel") ? "images/drizzling-wheel.jpg" : "images/ground-chakkar.jpg";
+ if(c.includes("flower pots") || n.includes("fountain") || c.includes("fountain")) return "images/flower-pot.jpg";
+ if(n.includes("smoke")) return "images/colour-smoke.jpg";
+ if(c.includes("bomb")) return "images/10k-shot.jpg";
+ if(c.includes("twinkling star")) return "images/sparklers.jpg";
+ if(c.includes("sony comets")) return "images/fountain.jpg";
+ if(c.includes("matches")) return "images/laxmi-green.jpg";
+ return "images/fountain.jpg";
+}
 function render(){
  let q=document.getElementById("search").value.toLowerCase().trim(),c=document.getElementById("category").value;
  let list=products.filter(p=>(!q||p.name.toLowerCase().includes(q))&&(!c||p.category===c));
- document.getElementById("grid").innerHTML=list.map(p=>`<div class="card"><div class="photo">🎇</div><div class="body">
+ document.getElementById("grid").innerHTML=list.map(p=>`<div class="card"><div class="photo"><img loading="lazy" src="${imageFor(p)}" alt="${esc(p.name)} product photo"></div><div class="body">
  <div class="name">${esc(p.name)}</div><div><span class="price">₹${money(p.price)}</span>${p.mrp?`<span class="mrp">₹${money(p.mrp)}</span>`:""}</div>
  <div class="small">Per: ${esc(p.per)} · ${esc(p.category)}</div><div class="qtyrow"><button onclick="change(${p.id},-1)">−</button>
  <input id="q${p.id}" type="number" min="1" value="1"><button onclick="change(${p.id},1)">+</button></div>
